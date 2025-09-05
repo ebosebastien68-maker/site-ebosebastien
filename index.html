@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Professionnel Dynamique</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --bg-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --text-color: #212529;
+            --border-color: #dee2e6;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* --- Header Principal --- */
+        .main-header {
+            position: relative;
+            height: 50vh;
+            min-height: 350px;
+            background-size: cover;
+            background-position: center;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-radius: var(--border-radius);
+            margin-bottom: 40px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        .main-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.2));
+        }
+        .main-header-content {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+        }
+        #main-header-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+            margin: 0;
+        }
+
+        /* --- Navigation et Authentification --- */
+        .top-nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 15px 30px;
+            background: var(--surface-color);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+        .auth-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .auth-button:hover {
+            opacity: 0.85;
+            transform: translateY(-2px);
+        }
+        #user-info {
+            font-weight: 600;
+        }
+        #logout-button {
+            background: none;
+            border: none;
+            color: var(--secondary-color);
+            margin-left: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        /* --- Fil d'articles --- */
+        #articles-feed {
+            display: grid;
+            gap: 30px;
+        }
+        .article-card {
+            background-color: var(--surface-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            perspective: 1000px;
+        }
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+        .article-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        .article-content {
+            padding: 25px;
+        }
+        .article-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        .article-body {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+        }
+        .article-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+        .article-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        .buy-button, .whatsapp-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .buy-button {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .whatsapp-button {
+            background-color: #25D366;
+            color: white;
+        }
+        .buy-button:hover, .whatsapp-button:hover {
+            opacity: 0.85;
+            transform: translateY(-2px);
+        }
+
+        /* --- Commentaires --- */
+        .comments-section {
+            padding: 0 25px 25px 25px;
+        }
+        .comments-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+        .comment {
+            background: #f1f3f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .comment-author {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .comment-text {
+            font-size: 0.95rem;
+        }
+        .comment-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            resize: vertical;
+            margin-bottom: 10px;
+        }
+        .comment-form button {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            float: right;
+            transition: background-color 0.3s;
+        }
+        .comment-form button:hover {
+            background-color: #5a6268;
+        }
+        
+        /* --- Modal d'Authentification --- */
+        .auth-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .auth-modal-content {
+            background: var(--surface-color);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .auth-modal-close {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--secondary-color);
+        }
+        .auth-modal h2 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .auth-modal .form-group {
+            margin-bottom: 15px;
+        }
+        .auth-modal input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+        .auth-modal button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .auth-modal button:hover {
+            opacity: 0.85;
+        }
+        .auth-toggle {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+        .auth-toggle a {
+            color: var(--primary-color);
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .auth-error {
+            color: #dc3545;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            min-height: 1.2em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-nav">
+        <div id="auth-container">
+            </div>
+    </div>
+
+    <div class="container">
+        <header class="main-header" id="main-header">
+            <div class="main-header-content">
+                <h1 id="main-header-title">Chargement...</h1>
+            </div>
+        </header>
+
+        <main id="articles-feed">
+            </main>
+    </div>
+
+    <div id="auth-modal" class="auth-modal">
+        <div class="auth-modal-content">
+            <span id="auth-modal-close" class="auth-modal-close">&times;</span>
+            
+            <div id="signup-form-container">
+                <h2>Inscription</h2>
+                <p id="auth-error-signup" class="auth-error"></p>
+                <form id="signup-form">
+                    <div class="form-group">
+                        <input type="text" id="signup-firstname" placeholder="Prénom" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="signup-lastname" placeholder="Nom" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="signup-email" placeholder="Adresse e-mail" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="signup-password" placeholder="Mot de passe" required>
+                    </div>
+                    <button type="submit">S'inscrire</button>
+                </form>
+                <p class="auth-toggle">Déjà un compte ? <a id="show-login">Se connecter</a></p>
+            </div>
+
+            <div id="login-form-container" style="display: none;">
+                <h2>Connexion</h2>
+                 <p id="auth-error-login" class="auth-error"></p>
+                <form id="login-form">
+                    <div class="form-group">
+                        <input type="email" id="login-email" placeholder="Adresse e-mail" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="login-password" placeholder="Mot de passe" required>
+                    </div>
+                    <a href="#" id="forgot-password-link" style="font-size: 0.8rem; color: var(--secondary-color); text-decoration: none; display: block; margin-bottom: 15px;">Mot de passe oublié ?</a>
+                    <button type="submit">Se connecter</button>
+                </form>
+                <p class="auth-toggle">Pas de compte ? <a id="show-signup">S'inscrire</a></p>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <script>
+        // --- CONFIGURATION FIREBASE ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyCHtnXqryhreMQrPPlMmTKi2SHdubZ-gZA",
+            authDomain: "ebosebastien-f453d.firebaseapp.com",
+            projectId: "ebosebastien-f453d",
+            storageBucket: "ebosebastien-f453d.firebasestorage.app",
+            messagingSenderId: "838753184188",
+            appId: "1:838753184188:web:92df6ccc3deae5effca3b9"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // --- CONSTANTES ---
+        const WHATSAPP_LINK = "https://wa.me/22942318781";
+        
+        // --- ÉLÉMENTS DU DOM ---
+        const authContainer = document.getElementById('auth-container');
+        const articlesFeed = document.getElementById('articles-feed');
+        const mainHeader = document.getElementById('main-header');
+        const mainHeaderTitle = document.getElementById('main-header-title');
+        const authModal = document.getElementById('auth-modal');
+        const authModalClose = document.getElementById('auth-modal-close');
+        const signupFormContainer = document.getElementById('signup-form-container');
+        const loginFormContainer = document.getElementById('login-form-container');
+
+        // --- GESTION DE L'AUTHENTIFICATION ---
+        let currentUser = null;
+
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                currentUser = { uid: user.uid, email: user.email, ...userDoc.data() };
+                updateUIForLoggedInUser();
+                authModal.style.display = 'none';
+            } else {
+                currentUser = null;
+                updateUIForLoggedOutUser();
+            }
+            loadArticles(); // Recharger les articles pour mettre à jour l'état (ex: formulaires de com)
+        });
+
+        function updateUIForLoggedInUser() {
+            authContainer.innerHTML = `
+                <span id="user-info">Bienvenue, ${currentUser.firstName}</span>
+                <button id="logout-button">Déconnexion</button>
+            `;
+            document.getElementById('logout-button').addEventListener('click', () => auth.signOut());
+        }
+
+        function updateUIForLoggedOutUser() {
+            authContainer.innerHTML = `
+                <button id="login-signup-button" class="auth-button">Connexion / Inscription</button>
+            `;
+            document.getElementById('login-signup-button').addEventListener('click', () => {
+                authModal.style.display = 'flex';
+            });
+        }
+        
+        // --- GESTION MODAL AUTHENTIFICATION ---
+        authModalClose.addEventListener('click', () => authModal.style.display = 'none');
+        document.getElementById('show-login').addEventListener('click', () => {
+            signupFormContainer.style.display = 'none';
+            loginFormContainer.style.display = 'block';
+        });
+        document.getElementById('show-signup').addEventListener('click', () => {
+            loginFormContainer.style.display = 'none';
+            signupFormContainer.style.display = 'block';
+        });
+
+        // Inscription
+        document.getElementById('signup-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            console.log("Tentative d'inscription...");
+            const firstName = document.getElementById('signup-firstname').value;
+            const lastName = document.getElementById('signup-lastname').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const errorP = document.getElementById('auth-error-signup');
+            
+            errorP.textContent = 'Inscription en cours...';
+
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                console.log("Utilisateur créé dans Authentication:", userCredential.user);
+
+                await db.collection('users').doc(userCredential.user.uid).set({
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email
+                });
+                console.log("Données utilisateur enregistrées dans Firestore.");
+                errorP.textContent = '';
+            } catch (error) {
+                console.error("Erreur d'inscription détaillée:", error);
+                if (error.code == 'auth/weak-password') {
+                    errorP.textContent = "Erreur : Le mot de passe doit comporter au moins 6 caractères.";
+                } else if (error.code == 'auth/email-already-in-use') {
+                    errorP.textContent = "Erreur : Cette adresse e-mail est déjà utilisée.";
+                } else {
+                    errorP.textContent = "Erreur d'inscription : " + error.message;
+                }
+            }
+        });
+
+        // Connexion
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            console.log("Tentative de connexion...");
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const errorP = document.getElementById('auth-error-login');
+
+            errorP.textContent = 'Connexion en cours...';
+
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                console.log("Connexion réussie !");
+                errorP.textContent = '';
+            } catch (error) {
+                console.error("Erreur de connexion détaillée:", error);
+                if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found' || error.code === 'auth/invalid-email') {
+                    errorP.textContent = "Erreur : L'e-mail ou le mot de passe est incorrect.";
+                } else {
+                    errorP.textContent = "Erreur de connexion : " + error.message;
+                }
+            }
+        });
+
+        // Mot de passe oublié
+        document.getElementById('forgot-password-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            if (!email) {
+                alert("Veuillez d'abord saisir votre adresse e-mail dans le champ ci-dessus.");
+                return;
+            }
+
+            auth.sendPasswordResetEmail(email)
+                .then(() => {
+                    alert("Un e-mail de réinitialisation de mot de passe a été envoyé à " + email);
+                })
+                .catch((error) => {
+                    alert("Erreur : " + error.message);
+                });
+        });
+
+        // --- CHARGEMENT DES DONNÉES ---
+        async function loadSiteConfig() {
+            try {
+                const configDoc = await db.collection('siteConfig').doc('main').get();
+                if (configDoc.exists) {
+                    const config = configDoc.data();
+                    mainHeaderTitle.textContent = config.headerTitle;
+                    mainHeader.style.backgroundImage = `url(${config.headerImageUrl})`;
+                } else {
+                     mainHeaderTitle.textContent = "Bienvenue sur notre plateforme";
+                }
+            } catch(e) {
+                console.error("Erreur de chargement de la config: ", e);
+                mainHeaderTitle.textContent = "Bienvenue sur notre plateforme";
+            }
+        }
+
+        async function loadArticles() {
+            articlesFeed.innerHTML = '';
+            const snapshot = await db.collection('articles').orderBy('createdAt', 'desc').get();
+            snapshot.forEach(doc => {
+                const article = doc.data();
+                const articleId = doc.id;
+                renderArticle(article, articleId);
+            });
+        }
+
+        function renderArticle(article, articleId) {
+            const articleEl = document.createElement('article');
+            articleEl.className = 'article-card';
+            
+            let imagesHTML = article.imageUrls && article.imageUrls.length > 0
+                ? article.imageUrls.map(url => `<img src="${url}" c
