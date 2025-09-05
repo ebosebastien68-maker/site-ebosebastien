@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panneau d'Administration</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        :root {
+            --admin-primary: #343a40;
+            --admin-secondary: #007bff;
+            --admin-light: #f8f9fa;
+            --admin-white: #ffffff;
+            --admin-text: #212529;
+            --admin-border: #ced4da;
+            --admin-success: #28a745;
+            --admin-danger: #dc3545;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--admin-light);
+            color: var(--admin-text);
+            margin: 0;
+        }
+
+        #admin-login, #admin-dashboard {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 30px;
+            background: var(--admin-white);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1, h2 {
+            color: var(--admin-primary);
+            border-bottom: 2px solid var(--admin-secondary);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        h2 { margin-top: 30px; }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"],
+        .form-group input[type="number"],
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--admin-border);
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        .button:hover { opacity: 0.85; }
+        .button-primary { background-color: var(--admin-secondary); color: white; }
+        .button-success { background-color: var(--admin-success); color: white; }
+        .button-danger { background-color: var(--admin-danger); color: white; }
+
+        #admin-login { max-width: 400px; }
+        #login-error { 
+            color: var(--admin-danger); 
+            margin-bottom: 15px;
+            min-height: 1.2em;
+        }
+
+        #articles-list { list-style-type: none; padding: 0; }
+        #articles-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid var(--admin-border);
+            border-radius: 4px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        #articles-list li span { font-weight: 500; flex-grow: 1; }
+        #articles-list .actions button { margin-left: 10px; }
+        
+        #logout-button-container {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div id="admin-login">
+        <h1>Connexion Administrateur</h1>
+        <p id="login-error"></p>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="admin-email">Email</label>
+                <input type="email" id="admin-email" required>
+            </div>
+            <div class="form-group">
+                <label for="admin-password">Mot de passe</label>
+                <input type="password" id="admin-password" required>
+            </div>
+            <button type="submit" class="button button-primary" style="width: 100%;">Connexion</button>
+        </form>
+    </div>
+
+    <div id="admin-dashboard" style="display: none;">
+        <div id="logout-button-container">
+             <button id="logout-button" class="button button-danger">Déconnexion</button>
+        </div>
+        <h1>Panneau d'Administration</h1>
+
+        <section id="header-management">
+            <h2>Gérer le Titre et l'Image d'Accueil</h2>
+            <form id="header-form">
+                <div class="form-group">
+                    <label for="header-title">Grand Titre</label>
+                    <input type="text" id="header-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="header-image-url">URL de l'Image Principale</label>
+                    <input type="text" id="header-image-url" required>
+                </div>
+                <button type="submit" class="button button-success">Mettre à jour l'accueil</button>
+            </form>
+        </section>
+
+        <section id="article-management">
+            <h2 id="form-title">Publier un nouvel Article/Produit</h2>
+            <form id="article-form">
+                <input type="hidden" id="article-id">
+                <div class="form-group">
+                    <label for="article-title">Titre</label>
+                    <input type="text" id="article-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="article-content">Contenu</label>
+                    <textarea id="article-content" required></textarea>
+                </div>
+                 <div class="form-group">
+                    <label for="article-main-image">URL de l'image principale de l'article</label>
+                    <input type="text" id="article-main-image">
+                </div>
+                <div class="form-group">
+                    <label for="article-images">URLs des images supplémentaires (une par ligne)</label>
+                    <textarea id="article-images" placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="article-price">Prix (optionnel)</label>
+                    <input type="number" step="0.01" id="article-price">
+                </div>
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="show-buy-button">
+                    <label for="show-buy-button">Afficher le bouton "Acheter"</label>
+                </div>
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="show-whatsapp">
+                    <label for="show-whatsapp">Afficher le bouton WhatsApp</label>
+                </div>
+                <button type="submit" class="button button-primary">Publier l'Article</button>
+                <button type="button" id="cancel-edit" style="display:none;" class="button">Annuler</button>
+            </form>
+        </section>
+
+        <section id="articles-list-container">
+            <h2>Articles Publiés</h2>
+            <ul id="articles-list">
+                </ul>
+        </section>
+        
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <script>
+        // --- CONFIGURATION FIREBASE ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyCHtnXqryhreMQrPPlMmTKi2SHdubZ-gZA",
+            authDomain: "ebosebastien-f453d.firebaseapp.com",
+            projectId: "ebosebastien-f453d",
+            storageBucket: "ebosebastien-f453d.firebasestorage.app",
+            messagingSenderId: "838753184188",
+            appId: "1:838753184188:web:92df6ccc3deae5effca3b9"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // --- !! IMPORTANT !! ---
+        // Remplacez cette valeur par l'UID de votre compte administrateur
+        const ADMIN_UID = "Zu4uGp9OeBZOyyGUBPNe62qaq4T2";
+
+        // --- ÉLÉMENTS DU DOM ---
+        const loginSection = document.getElementById('admin-login');
+        const dashboardSection = document.getElementById('admin-dashboard');
+        const loginForm = document.getElementById('login-form');
+        const articleForm = document.getElementById('article-form');
+        const articlesList = document.getElementById('articles-list');
+        const headerForm = document.getElementById('header-form');
+        const logoutButton = document.getElementById('logout-button');
+
+        // --- GESTION DE L'AUTHENTIFICATION ---
+        auth.onAuthStateChanged(user => {
+            if (user && user.uid === ADMIN_UID) {
+                loginSection.style.display = 'none';
+                dashboardSection.style.display = 'block';
+                loadAdminData();
+            } else {
+                loginSection.style.display = 'block';
+                dashboardSection.style.display = 'none';
+                if (user) { // Si un utilisateur non-admin se connecte
+                    auth.signOut(); // On le déconnecte
+                    alert("Accès refusé. Seul l'administrateur peut se connecter ici.");
+                }
+            }
+        });
+        
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
+            const errorP = document.getElementById('login-error');
+            errorP.textContent = "Connexion en cours...";
+
+            auth.signInWithEmailAndPassword(email, password)
+                .catch(error => {
+                    console.error("Erreur de connexion Admin:", error);
+                     if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found' || error.code === 'auth/invalid-email') {
+                        errorP.textContent = "Erreur : L'e-mail ou le mot de passe est incorrect.";
+                    } else {
+                        errorP.textContent = "Erreur de connexion : " + error.message;
+                    }
+                });
+        });
+
+        logoutButton.addEventListener('click', () => auth.signOut());
+
+        // --- CHARGEMENT DES DONNÉES ADMIN ---
+        function loadAdminData() {
+            loadArticlesList();
+            loadHeaderConfig();
+        }
+        
+        async function loadHeaderConfig() {
+            const doc = await db.collection('siteConfig').doc('main').get();
+            if (doc.exists) {
+                const data = doc.data();
+                document.getElementById('header-title').value = data.headerTitle;
+                document.getElementById('header-image-url').value = data.headerImageUrl;
+            }
+        }
+
+        async function loadArticlesList() {
+            articlesList.innerHTML = 'Chargement des articles...';
+            const snapshot = await db.collection('articles').orderBy('createdAt', 'desc').get();
+            articlesList.innerHTML = '';
+            if (snapshot.empty) {
+                articlesList.innerHTML = '<li>Aucun article publié pour le moment.</li>';
+                return;
+            }
+            snapshot.forEach(doc => {
+                const article = doc.data();
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${article.title}</span>
+                    <div class="actions">
+                        <button class="button" onclick="editArticle('${doc.id}')">Modifier</button>
+                        <button class="button button-danger" onclick="deleteArticle('${doc.id}')">Supprimer</button>
+                    </div>
+                `;
+                articlesList.appendChild(li);
+            });
+        }
+        
+        // --- GESTION DU HEADER ---
+        headerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('header-title').value;
+            const imageUrl = document.getElementById('header-image-url').value;
+            try {
+                await db.collection('siteConfig').doc('main').set({
+                    headerTitle: title,
+                    headerImageUrl: imageUrl
+                }, { merge: true });
+                alert('Header mis à jour avec succès !');
+            } catch (error) {
+                alert("Erreur: " + error.message);
+            }
+        });
+
+        // --- GESTION DES ARTICLES (CRUD) ---
+        articleForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const articleId = document.getElementById('article-id').value;
+            const imageUrls = document.getElementById('article-images').value
+                .split('\n')
+                .map(url => url.trim())
+                .filter(url => url);
+
+            const articleData = {
+                title: document.getElementById('article-title').value,
+                content: document.getElementById('article-content').value,
+                mainImageUrl: document.getElementById('article-main-image').value,
+                imageUrls: imageUrls,
+                price: document.getElementById('article-price').value || null,
+                showBuyButton: document.getElementById('show-buy-button').checked,
+                showWhatsApp: document.getElementById('show-whatsapp').checked,
+            };
+
+            try {
+                if (articleId) {
+                    await db.collection('articles').doc(articleId).update(articleData);
+                    alert("Article mis à jour !");
+                } else {
+                    articleData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    await db.collection('articles').add(articleData);
+                    alert("Article publié !");
+                }
+                resetForm();
+                loadArticlesList();
+            } catch (error) {
+                console.error("Erreur: ", error);
+                alert("Une erreur est survenue: " + error.message);
+            }
+        });
+        
+        window.editArticle = async (id) => {
+            const doc = await db.collection('articles').doc(id).get();
+            if (doc.exists) {
+                const article = doc.data();
+                document.getElementById('article-id').value = id;
+                document.getElementById('article-title').value = article.title;
+                document.getElementById('article-content').value = article.content;
+                document.getElementById('article-main-image').value = article.mainImageUrl || '';
+                document.getElementById('article-images').value = (article.imageUrls || []).join('\n');
+                document.getElementById('article-price').value = article.price || '';
+                document.getElementById('show-buy-button').checked = article.showBuyButton;
+                document.getElementById('show-whatsapp').checked = article.showWhatsApp;
+                
+                document.getElementById('form-title').textContent = "Modifier l'Article";
+                articleForm.querySelector('button[type="submit"]').textContent = "Mettre à jour";
+                document.getElementById('cancel-edit').style.display = 'inline-block';
+                window.scrollTo({ top: document.getElementById('article-management').offsetTop, behavior: 'smooth' });
+            }
+        };
+
+        window.deleteArticle = async (id) => {
+            if (confirm("Êtes-vous sûr de vouloir supprimer cet article ? Cette action est irréversible.")) {
+                try {
+                    await db.collection('articles').doc(id).delete();
+                    // Pour une application complète, il faudrait aussi supprimer les commentaires liés.
+                    alert("Article supprimé.");
+                    loadArticlesList();
+                } catch (error) {
+                    alert("Erreur lors de la suppression : " + error.message);
+                }
+            }
+        };
+        
+        document.getElementById('cancel-edit').addEventListener('click', resetForm);
+        
+        function resetForm() {
+             document.getElementById('form-title').textContent = "Publier un nouvel Article/Produit";
+             articleForm.querySelector('button[type="submit"]').textContent = "Publier l'Article";
+             document.getElementById('cancel-edit').style.display = 'none';
+             document.getElementById('article-id').value = '';
+             articleForm.reset();
+        }
+
+    </script>
+</body>
+</html>
