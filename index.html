@@ -1,566 +1,404 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Profil Professionnel Dynamique</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profil Professionnel Dynamique</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
-        :root {
-            --primary-color: #0d6efd;
-            --secondary-color: #6c757d;
-            --bg-color: #f8f9fa;
-            --surface-color: #ffffff;
-            --text-color: #212529;
-            --border-color: #dee2e6;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            --border-radius: 12px;
-        }
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --bg-color: #f8f9fa;
+    --surface-color: #ffffff;
+    --text-color: #212529;
+    --border-color: #dee2e6;
+    --shadow: 0 4px 20px rgba(0,0,0,0.05);
+    --border-radius: 12px;
+}
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            line-height: 1.6;
-        }
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.6;
+}
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
 
-        .main-header {
-            position: relative;
-            height: 50vh;
-            min-height: 350px;
-            background-size: cover;
-            background-position: center;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            border-radius: var(--border-radius);
-            margin-bottom: 40px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-        }
-        .main-header::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.2));
-        }
-        .main-header-content {
-            position: relative;
-            z-index: 2;
-            padding: 20px;
-        }
-        #main-header-title {
-            font-size: 2.8rem;
-            font-weight: 700;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
-            margin: 0;
-        }
+.main-header {
+    position: relative;
+    height: 50vh;
+    min-height: 350px;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: var(--border-radius);
+    margin-bottom: 40px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+.main-header::before {
+    content: '';
+    position: absolute;
+    top:0; left:0; right:0; bottom:0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.2));
+}
+.main-header-content {
+    position: relative;
+    z-index:2;
+    padding:20px;
+}
+#main-header-title {
+    font-size: 2.8rem;
+    font-weight:700;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+    margin:0;
+}
 
-        .top-nav {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 15px 30px;
-            background: var(--surface-color);
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
-        }
-        .auth-button {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
+.top-nav {
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    padding:15px 30px;
+    background: var(--surface-color);
+    box-shadow: var(--shadow);
+    margin-bottom:20px;
+}
+.auth-button {
+    background-color: var(--primary-color);
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:50px;
+    cursor:pointer;
+    font-weight:600;
+    transition: all 0.3s ease;
+}
 
-        #articles-feed {
-            display: grid;
-            gap: 30px;
-        }
-        .article-card {
-            background-color: var(--surface-color);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-        }
-        .article-image {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-        }
-        .article-content {
-            padding: 25px;
-        }
-        .article-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-top: 0;
-            margin-bottom: 15px;
-        }
-        .article-body {
-            font-size: 1rem;
-            color: #555;
-            margin-bottom: 20px;
-            white-space: pre-wrap;
-        }
-        .article-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 15px;
-            border-top: 1px solid var(--border-color);
-        }
-        .article-price {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-        .buy-button, .whatsapp-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-        }
-        .buy-button {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        .whatsapp-button {
-            background-color: #25D366;
-            color: white;
-        }
+#articles-feed {
+    display:grid;
+    gap:30px;
+}
+.article-card {
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+}
+.article-image {
+    width:100%;
+    height:300px;
+    object-fit:cover;
+}
+.article-content {
+    padding:25px;
+}
+.article-title {
+    font-size:1.8rem;
+    font-weight:600;
+    margin-top:0;
+    margin-bottom:15px;
+}
+.article-body {
+    font-size:1rem;
+    color:#555;
+    margin-bottom:20px;
+    white-space: pre-wrap;
+}
+.article-footer {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding-top:15px;
+    border-top:1px solid var(--border-color);
+}
+.article-price {
+    font-size:1.5rem;
+    font-weight:700;
+    color: var(--primary-color);
+}
+.buy-button, .whatsapp-button {
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 20px;
+    border-radius:50px;
+    text-decoration:none;
+    font-weight:600;
+    border:none;
+    cursor:pointer;
+}
+.buy-button {
+    background-color: var(--primary-color);
+    color:white;
+}
+.whatsapp-button {
+    background-color:#25D366;
+    color:white;
+}
 
-        .comments-section {
-            padding: 0 25px 25px 25px;
-        }
-        .comments-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 5px;
-            display: inline-block;
-        }
-        .comment {
-            background: #f1f3f5;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-        
-        .auth-modal {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .auth-modal-content {
-            background: var(--surface-color);
-            padding: 40px;
-            border-radius: var(--border-radius);
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            position: relative;
-        }
-        .auth-modal-close {
-            position: absolute;
-            top: 15px; right: 20px;
-            font-size: 2rem;
-            cursor: pointer;
-            color: var(--secondary-color);
-        }
-        .auth-modal h2 {
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 20px;
-        }
-        .auth-modal input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-        .auth-modal button {
-            width: 100%;
-            padding: 12px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .auth-toggle {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 0.9rem;
-        }
-        .auth-toggle a {
-            color: var(--primary-color);
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .auth-error {
-            color: #dc3545;
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-            min-height: 1.2em;
-        }
-    </style>
+.comments-section {
+    padding:0 25px 25px 25px;
+}
+.comments-title {
+    font-size:1.2rem;
+    font-weight:600;
+    margin-bottom:15px;
+    border-bottom:2px solid var(--primary-color);
+    padding-bottom:5px;
+    display:inline-block;
+}
+.comment {
+    background:#f1f3f5;
+    padding:15px;
+    border-radius:8px;
+    margin-bottom:10px;
+}
+
+.auth-modal {
+    position:fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.6);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
+.auth-modal-content {
+    background: var(--surface-color);
+    padding:40px;
+    border-radius: var(--border-radius);
+    width:90%;
+    max-width:400px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.2);
+    position:relative;
+}
+.auth-modal-close {
+    position:absolute;
+    top:15px; right:20px;
+    font-size:2rem;
+    cursor:pointer;
+    color: var(--secondary-color);
+}
+.auth-modal h2 {
+    text-align:center;
+    margin-top:0;
+    margin-bottom:20px;
+}
+.auth-modal input {
+    width:100%;
+    padding:12px;
+    border:1px solid var(--border-color);
+    border-radius:8px;
+    box-sizing:border-box;
+}
+.auth-modal button {
+    width:100%;
+    padding:12px;
+    background-color: var(--primary-color);
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:1rem;
+    font-weight:600;
+    cursor:pointer;
+}
+.auth-toggle {
+    text-align:center;
+    margin-top:20px;
+    font-size:0.9rem;
+}
+.auth-toggle a {
+    color: var(--primary-color);
+    cursor:pointer;
+    font-weight:600;
+}
+.auth-error {
+    color:#dc3545;
+    text-align:center;
+    margin-bottom:15px;
+    font-size:0.9rem;
+    min-height:1.2em;
+}
+</style>
 </head>
 <body>
 
-    <div class="top-nav">
-        <div id="auth-container"></div>
-    </div>
+<div class="top-nav">
+    <div id="auth-container"></div>
+</div>
 
-    <div class="container">
-        <header class="main-header" id="main-header">
-            <div class="main-header-content">
-                <h1 id="main-header-title">Chargement...</h1>
-            </div>
-        </header>
+<div class="container">
+    <header class="main-header" id="main-header">
+        <div class="main-header-content">
+            <h1 id="main-header-title">Bienvenue sur notre plateforme</h1>
+        </div>
+    </header>
 
-        <main id="articles-feed"></main>
-    </div>
+    <main id="articles-feed"></main>
+</div>
 
-    <div id="auth-modal" class="auth-modal">
-        <div class="auth-modal-content">
-            <span id="auth-modal-close" class="auth-modal-close">×</span>
-            
-            <div id="signup-form-container">
-                <h2>Inscription</h2>
-                <p id="auth-error-signup" class="auth-error"></p>
-                <form id="signup-form">
-                    <div class="form-group"><input type="text" id="signup-firstname" placeholder="Prénom" required></div>
-                    <div class="form-group"><input type="text" id="signup-lastname" placeholder="Nom" required></div>
-                    <div class="form-group"><input type="email" id="signup-email" placeholder="Adresse e-mail" required></div>
-                    <div class="form-group"><input type="password" id="signup-password" placeholder="Mot de passe" required></div>
-                    <button type="submit">S'inscrire</button>
-                </form>
-                <p class="auth-toggle">Déjà un compte ? <a id="show-login">Se connecter</a></p>
-            </div>
-
-            <div id="login-form-container" style="display: none;">
-                <h2>Connexion</h2>
-                 <p id="auth-error-login" class="auth-error"></p>
-                <form id="login-form">
-                    <div class="form-group"><input type="email" id="login-email" placeholder="Adresse e-mail" required></div>
-                    <div class="form-group"><input type="password" id="login-password" placeholder="Mot de passe" required></div>
-                    <a href="#" id="forgot-password-link" style="font-size: 0.8rem; color: var(--secondary-color); text-decoration: none; display: block; margin-bottom: 15px;">Mot de passe oublié ?</a>
-                    <button type="submit">Se connecter</button>
-                </form>
-                <p class="auth-toggle">Pas de compte ? <a id="show-signup">S'inscrire</a></p>
-            </div>
+<div id="auth-modal" class="auth-modal">
+    <div class="auth-modal-content">
+        <span id="auth-modal-close" class="auth-modal-close">×</span>
+        <div id="signup-form-container">
+            <h2>Inscription</h2>
+            <p id="auth-error-signup" class="auth-error"></p>
+            <form id="signup-form">
+                <div class="form-group"><input type="text" id="signup-firstname" placeholder="Prénom" required></div>
+                <div class="form-group"><input type="text" id="signup-lastname" placeholder="Nom" required></div>
+                <div class="form-group"><input type="email" id="signup-email" placeholder="Adresse e-mail" required></div>
+                <div class="form-group"><input type="password" id="signup-password" placeholder="Mot de passe" required></div>
+                <button type="submit">S'inscrire</button>
+            </form>
+            <p class="auth-toggle">Déjà un compte ? <a id="show-login">Se connecter</a></p>
+        </div>
+        <div id="login-form-container" style="display:none;">
+            <h2>Connexion</h2>
+            <p id="auth-error-login" class="auth-error"></p>
+            <form id="login-form">
+                <div class="form-group"><input type="email" id="login-email" placeholder="Adresse e-mail" required></div>
+                <div class="form-group"><input type="password" id="login-password" placeholder="Mot de passe" required></div>
+                <a href="#" id="forgot-password-link" style="font-size:0.8rem;color:var(--secondary-color);text-decoration:none;display:block;margin-bottom:15px;">Mot de passe oublié ?</a>
+                <button type="submit">Se connecter</button>
+            </form>
+            <p class="auth-toggle">Pas de compte ? <a id="show-signup">S'inscrire</a></p>
         </div>
     </div>
+</div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCHtnXqryhreMQrPPlMmTKi2SHdubZ-gZA",
-            authDomain: "ebosebastien-f453d.firebaseapp.com",
-            projectId: "ebosebastien-f453d",
-            storageBucket: "ebosebastien-f453d.firebasestorage.app",
-            messagingSenderId: "838753184188",
-            appId: "1:838753184188:web:92df6ccc3deae5effca3b9"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
+<script>
+const firebaseConfig = {
+    apiKey: "AIzaSyCHtnXqryhreMQrPPlMmTKi2SHdubZ-gZA",
+    authDomain: "ebosebastien-f453d.firebaseapp.com",
+    projectId: "ebosebastien-f453d",
+    storageBucket: "ebosebastien-f453d.appspot.com",
+    messagingSenderId: "838753184188",
+    appId: "1:838753184188:web:92df6ccc3deae5effca3b9"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const auth = firebase.auth();
 
-        const WHATSAPP_LINK = "https://wa.me/22942318781";
-        
-        const authContainer = document.getElementById('auth-container');
-        const articlesFeed = document.getElementById('articles-feed');
-        const mainHeader = document.getElementById('main-header');
-        const mainHeaderTitle = document.getElementById('main-header-title');
-        const authModal = document.getElementById('auth-modal');
-        const authModalClose = document.getElementById('auth-modal-close');
-        
-        let currentUser = null;
+const WHATSAPP_LINK = "https://wa.me/22942318781";
 
-        auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                const userDoc = await db.collection('users').doc(user.uid).get();
-                currentUser = { uid: user.uid, email: user.email, ...userDoc.data() };
-                updateUIForLoggedInUser();
-                authModal.style.display = 'none';
-            } else {
-                currentUser = null;
-                updateUIForLoggedOutUser();
-            }
-            loadArticles(); 
-        });
+const authContainer = document.getElementById('auth-container');
+const articlesFeed = document.getElementById('articles-feed');
+const mainHeader = document.getElementById('main-header');
+const mainHeaderTitle = document.getElementById('main-header-title');
+const authModal = document.getElementById('auth-modal');
+const authModalClose = document.getElementById('auth-modal-close');
 
-        function updateUIForLoggedInUser() {
-            authContainer.innerHTML = `
-                <span id="user-info">Bienvenue, ${currentUser.firstName}</span>
-                <button id="logout-button" style="background:none; border:none; color:var(--secondary-color); margin-left:20px; cursor:pointer; font-size:0.9rem;">Déconnexion</button>
-            `;
-            document.getElementById('logout-button').addEventListener('click', () => auth.signOut());
-        }
+let currentUser = null;
 
-        function updateUIForLoggedOutUser() {
-            authContainer.innerHTML = `<button id="login-signup-button" class="auth-button">Connexion / Inscription</button>`;
-            document.getElementById('login-signup-button').addEventListener('click', () => {
-                authModal.style.display = 'flex';
-            });
-        }
-        
-        authModalClose.addEventListener('click', () => authModal.style.display = 'none');
-        document.getElementById('show-login').addEventListener('click', () => {
-            document.getElementById('signup-form-container').style.display = 'none';
-            document.getElementById('login-form-container').style.display = 'block';
-        });
-        document.getElementById('show-signup').addEventListener('click', () => {
-            document.getElementById('login-form-container').style.display = 'none';
-            document.getElementById('signup-form-container').style.display = 'block';
-        });
+auth.onAuthStateChanged(async (user) => {
+    if (user) {
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        currentUser = { uid: user.uid, email: user.email, ...userDoc.data() };
+        updateUIForLoggedInUser();
+        authModal.style.display = 'none';
+    } else {
+        currentUser = null;
+        updateUIForLoggedOutUser();
+    }
+    loadArticles();
+});
 
-        document.getElementById('signup-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const errorP = document.getElementById('auth-error-signup');
-            errorP.textContent = 'Inscription en cours...';
-            try {
-                const userCredential = await auth.createUserWithEmailAndPassword(e.target['signup-email'].value, e.target['signup-password'].value);
-                await db.collection('users').doc(userCredential.user.uid).set({
-                    firstName: e.target['signup-firstname'].value,
-                    lastName: e.target['signup-lastname'].value,
-                    email: e.target['signup-email'].value
-                });
-                errorP.textContent = '';
-            } catch (error) {
-                if (error.code == 'auth/weak-password') errorP.textContent = "Erreur : Le mot de passe doit comporter au moins 6 caractères.";
-                else if (error.code == 'auth/email-already-in-use') errorP.textContent = "Erreur : Cette adresse e-mail est déjà utilisée.";
-                else errorP.textContent = "Erreur d'inscription : " + error.message;
-            }
-        });
+function updateUIForLoggedInUser() {
+    authContainer.innerHTML = `
+        <span id="user-info">Bienvenue, ${currentUser.firstName}</span>
+        <button id="logout-button" style="background:none; border:none; color:var(--secondary-color); margin-left:20px; cursor:pointer; font-size:0.9rem;">Déconnexion</button>
+    `;
+    document.getElementById('logout-button').addEventListener('click', () => auth.signOut());
+}
 
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const errorP = document.getElementById('auth-error-login');
-            errorP.textContent = 'Connexion en cours...';
-            try {
-                await auth.signInWithEmailAndPassword(e.target['login-email'].value, e.target['login-password'].value);
-                errorP.textContent = '';
-            } catch (error) {
-                errorP.textContent = "Erreur : L'e-mail ou le mot de passe est incorrect.";
-            }
-        });
+function updateUIForLoggedOutUser() {
+    authContainer.innerHTML = `<button id="login-signup-button" class="auth-button">Connexion / Inscription</button>`;
+    document.getElementById('login-signup-button').addEventListener('click', () => {
+        authModal.style.display = 'flex';
+    });
+}
 
-        document.getElementById('forgot-password-link').addEventListener('click', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            if (!email) { alert("Veuillez d'abord saisir votre adresse e-mail."); return; }
-            auth.sendPasswordResetEmail(email)
-                .then(() => alert("Un e-mail de réinitialisation a été envoyé à " + email))
-                .catch((error) => alert("Erreur : " + error.message));
-        });
+authModalClose.addEventListener('click', () => authModal.style.display = 'none');
+document.getElementById('show-login').addEventListener('click', () => {
+    document.getElementById('signup-form-container').style.display = 'none';
+    document.getElementById('login-form-container').style.display = 'block';
+});
+document.getElementById('show-signup').addEventListener('click', () => {
+    document.getElementById('login-form-container').style.display = 'none';
+    document.getElementById('signup-form-container').style.display = 'block';
+});
 
-        async function loadSiteConfig() {
-            try {
-                const configDoc = await db.collection('siteConfig').doc('main').get();
-                if (configDoc.exists) {
-                    const config = configDoc.data();
-                    mainHeaderTitle.textContent = config.headerTitle;
-                    mainHeader.style.backgroundImage = `url(${config.headerImageUrl})`;
-                } else {
-                     mainHeaderTitle.textContent = "Bienvenue sur notre plateforme";
-                }
-            } catch(e) {
-                console.error("Erreur de chargement de la config: ", e);
-                mainHeaderTitle.textContent = "Bienvenue sur notre plateforme";
-            }
-        }
+document.getElementById('signup-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const firstName = document.getElementById('signup-firstname').value;
+    const lastName = document.getElementById('signup-lastname').value;
+    const email = document.getElementById('signup-email').value;
+    const password = document.getElementById('signup-password').value;
 
-        // VERSION CORRIGÉE DE loadArticles : sécurise le tri createdAt pour éviter un crash si absent
-        async function loadArticles() {
-            articlesFeed.innerHTML = 'Chargement des articles...';
-            try {
-                // On récupère les articles SANS orderBy (évite problèmes d'index)
-                const snapshot = await db.collection('articles').get();
-                
-                if (snapshot.empty) {
-                    articlesFeed.innerHTML = '<p>Aucun article publié pour le moment.</p>';
-                    return;
-                }
-                articlesFeed.innerHTML = '';
-                
-                // On met tous les articles dans un tableau pour pouvoir les trier nous-mêmes.
-                const articles = [];
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    // Sécuriser createdAt : si présent et valide, convertir, sinon mettre une date min
-                    let createdAtDate = new Date(0); // fallback
-                    try {
-                        if (data && data.createdAt && typeof data.createdAt.toDate === 'function') {
-                            createdAtDate = data.createdAt.toDate();
-                        } else if (data && data.createdAt instanceof Date) {
-                            createdAtDate = data.createdAt;
-                        }
-                    } catch (e) {
-                        // si conversion échoue, on garde fallback
-                    }
-                    // On stocke aussi un champ interne __createdAt pour le tri sans modifier le document original
-                    articles.push({ id: doc.id, ...data, __createdAt: createdAtDate });
-                });
+    try {
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        await db.collection('users').doc(userCredential.user.uid).set({ firstName, lastName });
+    } catch (error) {
+        document.getElementById('auth-error-signup').innerText = error.message;
+    }
+});
 
-                // Tri manuel sécurisé : utilise le champ __createdAt (Date) défini ci-dessus
-                articles.sort((a, b) => b.__createdAt - a.__createdAt);
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
 
-                // Afficher
-                articles.forEach(article => {
-                    renderArticle(article, article.id);
-                });
+    try {
+        await auth.signInWithEmailAndPassword(email, password);
+    } catch (error) {
+        document.getElementById('auth-error-login').innerText = error.message;
+    }
+});
 
-            } catch (error) {
-                console.error("ERREUR DE FIRESTORE:", error);
-                articlesFeed.innerHTML = `<p style="color: red;">Une erreur est survenue lors du chargement des articles.</p>`;
-            }
-        }
-
-        function renderArticle(article, articleId) {
-            const articleEl = document.createElement('article');
-            articleEl.className = 'article-card';
-            
-            // ATTENTION: on conserve les champs tels quels (mainImageUrl, imageUrls, title, content, etc.)
-            let imagesHTML = article.imageUrls && article.imageUrls.length > 0
-                ? article.imageUrls.map(url => `<img src="${url}" class="article-image" alt="Image de l'article">`).join('')
-                : '';
-
-            let footerHTML = `
-                <div class="article-actions">
-                    ${article.showBuyButton ? `<button class="buy-button">Acheter</button>` : ''}
-                    ${article.showWhatsApp ? `<a href="${WHATSAPP_LINK}" target="_blank" class="whatsapp-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"></path></svg> WhatsApp</a>` : ''}
-                </div>
-                <span class="article-price">${article.price ? `${article.price} €` : ''}</span>
-            `;
-
-            articleEl.innerHTML = `
-                ${article.mainImageUrl ? `<img src="${article.mainImageUrl}" class="article-image" alt="Image principale">` : ''}
-                ${imagesHTML}
+async function loadArticles() {
+    articlesFeed.innerHTML = '';
+    try {
+        const snapshot = await db.collection('articles').orderBy('createdAt', 'desc').get();
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            const article = document.createElement('div');
+            article.className = 'article-card';
+            article.innerHTML = `
+                <img class="article-image" src="${data.imageUrl || 'https://via.placeholder.com/600x300'}" alt="Article Image">
                 <div class="article-content">
-                    <h2 class="article-title">${article.title || ''}</h2>
-                    <p class="article-body">${article.content || ''}</p>
-                    <div class="article-footer">${footerHTML}</div>
-                </div>
-                <div class="comments-section" id="comments-for-${articleId}">
-                    <h3 class="comments-title">Commentaires</h3>
-                    <div class="comment-form-container">${getCommentFormHTML(articleId)}</div>
+                    <h3 class="article-title">${data.title}</h3>
+                    <p class="article-body">${data.description || ''}</p>
+                    <div class="article-footer">
+                        <span class="article-price">${data.price ? data.price + ' FCFA' : ''}</span>
+                        <div>
+                            ${data.price ? `<button class="buy-button">Acheter</button>` : ''}
+                            <a class="whatsapp-button" href="${WHATSAPP_LINK}" target="_blank">WhatsApp</a>
+                        </div>
+                    </div>
                 </div>
             `;
-            articlesFeed.appendChild(articleEl);
-            loadComments(articleId);
-
-            // Attacher l'écouteur du formulaire de commentaire (s'il existe)
-            const commentForm = document.getElementById(`comment-form-${articleId}`);
-            if(commentForm) {
-                commentForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    if(!currentUser) { alert("Veuillez vous inscrire ou vous connecter pour commenter."); authModal.style.display = 'flex'; return; }
-                    const commentText = e.target.querySelector('textarea').value;
-                    postComment(articleId, commentText);
-                    e.target.querySelector('textarea').value = '';
-                });
-            }
-        }
-        
-        function getCommentFormHTML(articleId) {
-            if (currentUser) {
-                return `<form class="comment-form" id="comment-form-${articleId}"><textarea placeholder="Votre commentaire..." required></textarea><button type="submit">Envoyer</button></form>`;
-            } else {
-                return `<p>Veuillez vous <a href="#" onclick="showAuthModal(event)">connecter</a> pour laisser un commentaire.</p>`;
-            }
-        }
-        
-        function showAuthModal(event) {
-            event.preventDefault();
-            authModal.style.display = 'flex';
-        }
-
-        async function postComment(articleId, text) {
-            if (!text.trim()) return;
-            try {
-                await db.collection('comments').add({
-                    articleId: articleId,
-                    userId: currentUser.uid,
-                    userName: `${currentUser.firstName} ${currentUser.lastName}`,
-                    text: text,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                loadComments(articleId);
-            } catch (error) {
-                console.error("Erreur d'envoi du commentaire: ", error);
-                alert("Une erreur est survenue.");
-            }
-        }
-
-        async function loadComments(articleId) {
-            const commentsContainer = document.getElementById(`comments-for-${articleId}`);
-            if (!commentsContainer) return;
-            const oldComments = commentsContainer.querySelectorAll('.comment');
-            oldComments.forEach(c => c.remove());
-
-            // Remarque : si aucun index ou champ createdAt n'existe dans comments, Firestore peut lancer une erreur en orderBy.
-            // Ce comportement est inchangé (comme dans ton code original).
-            try {
-                const snapshot = await db.collection('comments').where('articleId', '==', articleId).orderBy('createdAt', 'asc').get();
-                snapshot.forEach(doc => {
-                    const comment = doc.data();
-                    const commentEl = document.createElement('div');
-                    commentEl.className = 'comment';
-                    commentEl.innerHTML = `<p style="font-weight:600;font-size:0.9rem;">${comment.userName}</p><p style="font-size:0.95rem;">${comment.text}</p>`;
-                    commentsContainer.insertBefore(commentEl, commentsContainer.querySelector('.comment-form-container'));
-                });
-            } catch (err) {
-                // Si orderBy('createdAt') pose problème (par ex. champ manquant), on récupère sans order
-                try {
-                    const snapshot = await db.collection('comments').where('articleId', '==', articleId).get();
-                    snapshot.forEach(doc => {
-                        const comment = doc.data();
-                        const commentEl = document.createElement('div');
-                        commentEl.className = 'comment';
-                        commentEl.innerHTML = `<p style="font-weight:600;font-size:0.9rem;">${comment.userName}</p><p style="font-size:0.95rem;">${comment.text}</p>`;
-                        commentsContainer.insertBefore(commentEl, commentsContainer.querySelector('.comment-form-container'));
-                    });
-                } catch (e) {
-                    console.error("Erreur lors du chargement des commentaires :", e);
-                }
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            loadSiteConfig();
+            articlesFeed.appendChild(article);
         });
-    </script>
-  </body>
-                </html>
+    } catch (error) {
+        console.error('Erreur lors du chargement des articles:', error);
+    }
+}
+</script>
+</body>
+</html>
