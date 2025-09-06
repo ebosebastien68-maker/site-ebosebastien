@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Profil Professionnel Dynamique</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
@@ -402,11 +402,11 @@
             }
         }
 
-        // VERSION FINALE DE loadArticles, AVEC TRI MANUEL POUR GARANTIR LE FONCTIONNEMENT
+        // VERSION CORRIGÉE DE loadArticles : sécurise le tri createdAt pour éviter un crash si absent
         async function loadArticles() {
             articlesFeed.innerHTML = 'Chargement des articles...';
             try {
-                // On récupère les articles SANS le tri orderBy pour éviter les problèmes d'index.
+                // On récupère les articles SANS orderBy (évite problèmes d'index)
                 const snapshot = await db.collection('articles').get();
                 
                 if (snapshot.empty) {
@@ -418,21 +418,32 @@
                 // On met tous les articles dans un tableau pour pouvoir les trier nous-mêmes.
                 const articles = [];
                 snapshot.forEach(doc => {
-                    if (doc.data().createdAt && doc.data().createdAt.toDate) {
-                        articles.push({ id: doc.id, ...doc.data() });
+                    const data = doc.data();
+                    // Sécuriser createdAt : si présent et valide, convertir, sinon mettre une date min
+                    let createdAtDate = new Date(0); // fallback
+                    try {
+                        if (data && data.createdAt && typeof data.createdAt.toDate === 'function') {
+                            createdAtDate = data.createdAt.toDate();
+                        } else if (data && data.createdAt instanceof Date) {
+                            createdAtDate = data.createdAt;
+                        }
+                    } catch (e) {
+                        // si conversion échoue, on garde fallback
                     }
+                    // On stocke aussi un champ interne __createdAt pour le tri sans modifier le document original
+                    articles.push({ id: doc.id, ...data, __createdAt: createdAtDate });
                 });
 
-                // On TRIE le tableau manuellement ici, dans le code JavaScript.
-                articles.sort((a, b) => b.createdAt.toDate() - a.createdAt.toDate());
+                // Tri manuel sécurisé : utilise le champ __createdAt (Date) défini ci-dessus
+                articles.sort((a, b) => b.__createdAt - a.__createdAt);
 
-                // On affiche les articles maintenant qu'ils sont triés.
+                // Afficher
                 articles.forEach(article => {
                     renderArticle(article, article.id);
                 });
 
             } catch (error) {
-                console.error("ERREUR DE FIRETORE:", error);
+                console.error("ERREUR DE FIRESTORE:", error);
                 articlesFeed.innerHTML = `<p style="color: red;">Une erreur est survenue lors du chargement des articles.</p>`;
             }
         }
@@ -441,6 +452,7 @@
             const articleEl = document.createElement('article');
             articleEl.className = 'article-card';
             
+            // ATTENTION: on conserve les champs tels quels (mainImageUrl, imageUrls, title, content, etc.)
             let imagesHTML = article.imageUrls && article.imageUrls.length > 0
                 ? article.imageUrls.map(url => `<img src="${url}" class="article-image" alt="Image de l'article">`).join('')
                 : '';
@@ -457,8 +469,8 @@
                 ${article.mainImageUrl ? `<img src="${article.mainImageUrl}" class="article-image" alt="Image principale">` : ''}
                 ${imagesHTML}
                 <div class="article-content">
-                    <h2 class="article-title">${article.title}</h2>
-                    <p class="article-body">${article.content}</p>
+                    <h2 class="article-title">${article.title || ''}</h2>
+                    <p class="article-body">${article.content || ''}</p>
                     <div class="article-footer">${footerHTML}</div>
                 </div>
                 <div class="comments-section" id="comments-for-${articleId}">
@@ -469,6 +481,7 @@
             articlesFeed.appendChild(articleEl);
             loadComments(articleId);
 
+            // Attacher l'écouteur du formulaire de commentaire (s'il existe)
             const commentForm = document.getElementById(`comment-form-${articleId}`);
             if(commentForm) {
                 commentForm.addEventListener('submit', (e) => {
@@ -513,17 +526,36 @@
 
         async function loadComments(articleId) {
             const commentsContainer = document.getElementById(`comments-for-${articleId}`);
+            if (!commentsContainer) return;
             const oldComments = commentsContainer.querySelectorAll('.comment');
             oldComments.forEach(c => c.remove());
 
-            const snapshot = await db.collection('comments').where('articleId', '==', articleId).orderBy('createdAt', 'asc').get();
-            snapshot.forEach(doc => {
-                const comment = doc.data();
-                const commentEl = document.createElement('div');
-                commentEl.className = 'comment';
-                commentEl.innerHTML = `<p style="font-weight:600;font-size:0.9rem;">${comment.userName}</p><p style="font-size:0.95rem;">${comment.text}</p>`;
-                commentsContainer.insertBefore(commentEl, commentsContainer.querySelector('.comment-form-container'));
-            });
+            // Remarque : si aucun index ou champ createdAt n'existe dans comments, Firestore peut lancer une erreur en orderBy.
+            // Ce comportement est inchangé (comme dans ton code original).
+            try {
+                const snapshot = await db.collection('comments').where('articleId', '==', articleId).orderBy('createdAt', 'asc').get();
+                snapshot.forEach(doc => {
+                    const comment = doc.data();
+                    const commentEl = document.createElement('div');
+                    commentEl.className = 'comment';
+                    commentEl.innerHTML = `<p style="font-weight:600;font-size:0.9rem;">${comment.userName}</p><p style="font-size:0.95rem;">${comment.text}</p>`;
+                    commentsContainer.insertBefore(commentEl, commentsContainer.querySelector('.comment-form-container'));
+                });
+            } catch (err) {
+                // Si orderBy('createdAt') pose problème (par ex. champ manquant), on récupère sans order
+                try {
+                    const snapshot = await db.collection('comments').where('articleId', '==', articleId).get();
+                    snapshot.forEach(doc => {
+                        const comment = doc.data();
+                        const commentEl = document.createElement('div');
+                        commentEl.className = 'comment';
+                        commentEl.innerHTML = `<p style="font-weight:600;font-size:0.9rem;">${comment.userName}</p><p style="font-size:0.95rem;">${comment.text}</p>`;
+                        commentsContainer.insertBefore(commentEl, commentsContainer.querySelector('.comment-form-container'));
+                    });
+                } catch (e) {
+                    console.error("Erreur lors du chargement des commentaires :", e);
+                }
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -531,4 +563,4 @@
         });
     </script>
   </body>
-</html>
+                </html>
