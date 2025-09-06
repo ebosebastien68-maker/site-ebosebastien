@@ -280,9 +280,9 @@
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
     <script>
         const firebaseConfig = {
@@ -402,11 +402,11 @@
             }
         }
 
-        // VERSION FINALE DE loadArticles, SIMPLIFIÉE POUR GARANTIR LE FONCTIONNEMENT
+        // VERSION FINALE DE loadArticles, AVEC TRI MANUEL POUR GARANTIR LE FONCTIONNEMENT
         async function loadArticles() {
             articlesFeed.innerHTML = 'Chargement des articles...';
             try {
-                // On enlève le tri pour éviter les problèmes d'index pour le moment.
+                // On récupère les articles SANS le tri orderBy pour éviter les problèmes d'index.
                 const snapshot = await db.collection('articles').get();
                 
                 if (snapshot.empty) {
@@ -415,11 +415,18 @@
                 }
                 articlesFeed.innerHTML = '';
                 
-                // On trie les résultats manuellement après les avoir reçus
+                // On met tous les articles dans un tableau pour pouvoir les trier nous-mêmes.
                 const articles = [];
-                snapshot.forEach(doc => articles.push({ id: doc.id, ...doc.data() }));
+                snapshot.forEach(doc => {
+                    if (doc.data().createdAt && doc.data().createdAt.toDate) {
+                        articles.push({ id: doc.id, ...doc.data() });
+                    }
+                });
+
+                // On TRIE le tableau manuellement ici, dans le code JavaScript.
                 articles.sort((a, b) => b.createdAt.toDate() - a.createdAt.toDate());
 
+                // On affiche les articles maintenant qu'ils sont triés.
                 articles.forEach(article => {
                     renderArticle(article, article.id);
                 });
